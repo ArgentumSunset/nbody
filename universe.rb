@@ -6,7 +6,7 @@ class Universe < Gosu::Window
 	HEIGHT = 1000
 	WIDTH = 1000
 
-	attr_accessor :radius
+	attr_accessor :radius, :const
 
 	def initialize
 		super WIDTH, HEIGHT
@@ -19,14 +19,14 @@ class Universe < Gosu::Window
 		data = File.read('simulations/planets.txt')
 		lines = data.split("\n")
 
-		@body_number = lines[0]
-		@radius = lines[1]
-		@const = @radius / 1000
+		@body_number = lines[0].to_i
+		@radius = lines[1].to_f
+		@const = (@radius / 1000)
 
 		bodies_data = lines[2...lines.length]
 		bodies_data.each{|body| 
 		body = body.split(' ')
-		@bodies.push(Ssbody.new(body[0].to_i, body[1].to_i, body[2].to_i, body[3].to_i, body[4].to_i, body[5], body[6],self))
+		@bodies.push(Ssbody.new(body[0].to_f, body[1].to_f, body[2].to_f, body[3].to_f, body[4].to_f, body[5], body[6], self))
 
 	}
 	end
@@ -37,9 +37,25 @@ class Universe < Gosu::Window
 	end
 
 	def update
-
+		@bodies.each{|body| 
+			for i in 0...@bodies.length 
+				if @bodies[i].name != body.name
+					body.calculate_gravity(@bodies[i])
+				end
+			end
+		}
 	end
+
+	def print_forces
+		@bodies.each{|body|
+			puts body.total_force
+		}
+end
+
+	private
+
 end
 
 universe = Universe.new
 universe.show
+universe.print_forces
