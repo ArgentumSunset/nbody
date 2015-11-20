@@ -21,7 +21,6 @@ class Universe < Gosu::Window
 
 		@body_number = lines[0].to_i
 		@radius = lines[1].to_f
-		@const = (@radius / 1000)
 
 		bodies_data = lines[2...lines.length]
 		bodies_data.each{|body| 
@@ -42,13 +41,16 @@ class Universe < Gosu::Window
 				if @bodies[i].name != body.name
 					body.calculate_gravity(@bodies[i])
 				end
+				body.calculate_acceleration
+				body.calculate_velocity
+				body.calculate_position
 			end
 		}
 	end
 
 	def print_forces
 		@bodies.each{|body|
-			puts body.total_force
+			puts "\n" + body.name + "\nPosition: (" + body.scaled_xpos.to_s + "," + body.scaled_ypos.to_s + "\nForce: " + body.total_force.to_s  + "\nAcceleration: " + body.xacc.to_s + "\nVelocity: " + body.xvel.to_s
 		}
 end
 
