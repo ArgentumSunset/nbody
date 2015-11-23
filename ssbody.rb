@@ -32,9 +32,10 @@ class Ssbody
 		xdist = xpos - body.xpos
 		ydist = ypos - body.ypos
 		dist = Math.sqrt((xdist**2) + (ydist**2))
-		@total_force += (G * mass * body.mass) / (dist**2)
+		@total_force = ((G * @mass * body.mass) / (dist**2))
 		@xforce -= ((@total_force * xdist) / dist)
 		@yforce -= ((@total_force * ydist) / dist)
+		print @total_force.to_s + " = " + @name + " being pulled on by " + body.name + "\n"
 	end
 
 	def calculate_acceleration
@@ -45,13 +46,13 @@ class Ssbody
 	end
 
 	def calculate_velocity
-		@xvel += xacc * 10000
-		@yvel += yacc * 10000
+		@xvel = (xvel + (xacc * 100000))
+		@yvel = (yvel + (yacc * 100000))
 	end
 
 	def calculate_position
-		@xpos += @xvel * 10000
-		@ypos += @yvel * 10000
+		@xpos += @xvel * 100000
+		@ypos += @yvel * 100000
 		@scaled_xpos = (@xpos / (radius * 2)) + 500
 		@scaled_ypos = (-@ypos / (radius * 2)) + 500
 	end

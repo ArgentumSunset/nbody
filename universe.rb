@@ -41,10 +41,10 @@ class Universe < Gosu::Window
 				if @bodies[i].name != body.name
 					body.calculate_gravity(@bodies[i])
 				end
-				body.calculate_acceleration
+			end
+			body.calculate_acceleration
 				body.calculate_velocity
 				body.calculate_position
-			end
 		}
 	end
 
